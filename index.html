@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Selamat Ulang Tahun!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Nunito:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#bfe3ff;--ink:#14213d;--pink:#ff4f8b;--sun:#ffd23f;--card:#fff;--muted:#3b4a6b;--sky:#4cc9f0;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14213d;--ink:#fff6e0;--card:#1f2f55;--muted:#b8c4e3;}}
+:root[data-theme="dark"]{--bg:#14213d;--ink:#fff6e0;--card:#1f2f55;--muted:#b8c4e3;}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Nunito',system-ui,sans-serif;font-size:18px;line-height:1.6;display:flex;flex-direction:column;align-items:center;padding:76px 20px 64px;text-align:center;overflow-x:hidden}
+h1{font-family:'Bricolage Grotesque',Georgia,serif;font-weight:800;font-size:clamp(2.4rem,9vw,4.6rem);line-height:1.02;margin:8px 0 12px;letter-spacing:-.02em;max-width:14ch}
+h1 .nama{color:var(--pink)}
+h2{font-family:'Bricolage Grotesque',Georgia,serif;font-weight:800;font-size:clamp(1.6rem,6vw,2.4rem);margin:0 0 4px}
+.sub{margin:0 0 12px;color:var(--muted);max-width:36ch;min-height:3.2em}
+.cake{width:min(340px,82vw);height:auto;margin:4px 0 8px}
+.candle{cursor:pointer;outline:none}
+.candle:focus-visible rect.hit{stroke:var(--sun);stroke-width:4}
+.flame{display:none;transform-origin:50% 100%;animation:flick .5s ease-in-out infinite alternate}
+.lit .flame{display:block}
+.glow{display:none}
+.lit .glow{display:block}
+.hint{fill:var(--pink);font:700 13px 'Nunito',sans-serif}
+.lit .hint{display:none}
+@keyframes flick{from{transform:scale(1) rotate(-3deg)}to{transform:scale(1.14) rotate(3deg)}}
+button{font:inherit;font-weight:700;background:var(--pink);color:#fff;border:0;border-radius:999px;padding:14px 28px;cursor:pointer;min-height:48px}
+button:disabled{background:var(--muted);opacity:.55;cursor:not-allowed}
+button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+button:not(:disabled):active{transform:scale(.97)}
+.btn2{background:var(--ink);color:var(--bg)}
+#langit{display:none;width:100%;max-width:640px;margin-top:56px}
+.out #langit{display:block}
+.balon-area{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 14px;margin:20px 0 8px;min-height:150px}
+.balon{position:relative;width:78px;height:96px;padding:0;border-radius:50% 50% 48% 48%;background:var(--c);border:0;animation:bob 3s ease-in-out infinite;animation-delay:var(--d);box-shadow:inset -8px -8px 0 rgba(0,0,0,.12)}
+.balon::before{content:"";position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);border:7px solid transparent;border-bottom-color:var(--c);border-top:0}
+.balon::after{content:"";position:absolute;left:50%;top:100%;width:2px;height:34px;background:var(--muted);opacity:.6}
+.balon:hover{transform:scale(1.07)}
+.balon.pecah{visibility:hidden}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -12px}}
+.progres{color:var(--muted);font-weight:700;margin:26px 0 12px}
+.ucapan{display:grid;gap:10px;text-align:left}
+.kartu{background:var(--card);border-left:8px solid var(--c);border-radius:14px;padding:14px 18px;animation:pop .45s ease-out}
+@keyframes pop{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
+.final{display:none;margin-top:28px}
+.final.on{display:block;animation:pop .6s ease-out}
+.final p{max-width:34ch;margin:8px auto 16px}
+.ganti{display:none;margin-top:44px;font-size:.9rem;color:var(--muted)}
+.ganti input{font:inherit;padding:8px 12px;border-radius:10px;border:2px solid var(--muted);background:var(--card);color:var(--ink);width:11em;margin-left:6px}
+canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:5}
+.bunting{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;display:flex;padding:0 4px;z-index:6;pointer-events:none;border-top:3px solid var(--muted)}
+.bunting span{flex:1;height:40px;margin:0 2px;clip-path:polygon(0 0,100% 0,50% 100%);background:var(--c);transform-origin:50% 0;animation:sway 2.2s ease-in-out infinite alternate;animation-delay:var(--d)}
+@keyframes sway{from{rotate:-6deg}to{rotate:6deg}}
+.deco{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.deco i{position:absolute;bottom:-90px;width:42px;height:52px;border-radius:50% 50% 48% 48%;background:var(--c);opacity:.7;animation:naik var(--t) linear infinite;animation-delay:var(--d)}
+.deco i::after{content:"";position:absolute;left:50%;top:100%;width:2px;height:26px;background:var(--muted);opacity:.5}
+@keyframes naik{to{transform:translateY(-120vh) translateX(var(--x))}}
+.player{width:min(340px,86vw);aspect-ratio:16/9;margin:22px 0 0;border-radius:14px;overflow:hidden;background:#000}
+.player iframe{width:100%;height:100%;border:0;display:block}
+.lagu-link{display:inline-block;margin:4px 4px 0;padding:12px 22px;border-radius:999px;background:var(--ink);color:var(--bg);font-weight:700;text-decoration:none;min-height:48px;line-height:1.5}
+.lagu-link:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.dino{background:transparent;border:0;padding:0;min-height:0;cursor:pointer;margin:2px 0 0;border-radius:20px;display:block}
+.dino svg{width:150px;height:auto;display:block;animation:napas 2.4s ease-in-out infinite}
+.dino.loncat svg{animation:loncat .55s ease-out}
+.mata{transform-box:fill-box;transform-origin:center;animation:kedip 4s infinite}
+@keyframes napas{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes loncat{40%{transform:translateY(-36px) rotate(-6deg)}}
+@keyframes kedip{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+.dinoTxt{display:block;min-height:1.7em;margin:4px 0 14px;font-weight:700;color:var(--pink)}
+@media (prefers-reduced-motion:reduce){.dino svg,.mata{animation:none}}
+.tahap{display:none;width:100%;margin-top:48px}
+.tahap.on{display:block;animation:pop .5s ease-out}
+.arena{position:relative;height:300px;margin:16px 0 14px;background:var(--card);border-radius:18px;overflow:hidden}
+.skor{position:absolute;top:10px;left:14px;font-weight:700;color:var(--muted)}
+.hati{position:absolute;top:-50px;width:48px;height:48px;padding:0;background:transparent;font-size:2rem;line-height:1;animation:jatuh linear forwards;border-radius:50%}
+@keyframes jatuh{to{transform:translateY(360px)}}
+.kotak{font-size:5rem;line-height:1;background:transparent;padding:10px 24px;min-height:0}
+.kotak.goyang{animation:geter .35s}
+@keyframes geter{25%{transform:rotate(-12deg) scale(1.1)}75%{transform:rotate(12deg) scale(1.1)}}
+.malam{position:relative;height:240px;margin-top:16px;background:#14213d;border-radius:18px;overflow:hidden}
+.lentera{position:absolute;bottom:-50px;max-width:110px;font-size:.78rem;line-height:1.25;padding:8px 10px;border-radius:12px 12px 20px 20px;background:#ffb703;color:#14213d;font-weight:700;box-shadow:0 0 22px 6px rgba(255,183,3,.55);animation:terbang 7s ease-in forwards;overflow-wrap:anywhere}
+@keyframes terbang{to{transform:translateY(-300px);opacity:.15}}
+#harap{font:inherit;padding:12px 14px;border-radius:12px;border:2px solid var(--muted);background:var(--card);color:var(--ink);width:min(300px,80%);margin-bottom:10px}
+.mute{position:fixed;right:12px;top:calc(env(safe-area-inset-top,0px) + 52px);z-index:7;min-height:44px;width:44px;padding:0;background:var(--card);border-radius:50%;font-size:1.2rem}
+@keyframes goyang{0%,100%{rotate:0deg}25%{rotate:-3deg;scale:1.04}75%{rotate:3deg;scale:1.04}}
+.out h1{animation:goyang .7s ease-in-out 3}
+@media (prefers-reduced-motion:reduce){.deco,.bunting span{display:none}.out h1{animation:none}}
+@media (prefers-reduced-motion:reduce){.flame,.balon{animation:none}.kartu,.final.on{animation:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<canvas id="c" aria-hidden="true"></canvas>
+<button class="mute" id="mute" type="button" aria-label="Matikan suara">🔊</button>
+
+<h1>Selamat ulang tahun, <span class="nama" id="nama">Sherlyta</span>!</h1>
+<p class="sub" id="sub">Sentuh tiap lilin untuk menyalakannya.</p>
+
+<button class="dino" id="dino" type="button" aria-label="Dino kuning, sentuh untuk menyapa">
+  <svg viewBox="0 0 170 140" aria-hidden="true">
+    <path d="M36 92Q4 98 8 64Q22 84 46 80Z" fill="#ffd23f"/>
+    <rect x="52" y="108" width="17" height="24" rx="7" fill="#f2b705"/>
+    <rect x="92" y="108" width="17" height="24" rx="7" fill="#f2b705"/>
+    <ellipse cx="78" cy="90" rx="46" ry="34" fill="#ffd23f"/>
+    <ellipse cx="86" cy="100" rx="27" ry="22" fill="#fff2a8"/>
+    <polygon points="46,66 54,48 64,62" fill="#ff8c42"/>
+    <polygon points="66,60 76,42 86,58" fill="#ff8c42"/>
+    <polygon points="88,60 98,44 106,62" fill="#ff8c42"/>
+    <circle cx="120" cy="64" r="28" fill="#ffd23f"/>
+    <ellipse cx="110" cy="92" rx="7" ry="4.5" fill="#f2b705" transform="rotate(25 110 92)"/>
+    <circle class="mata" cx="127" cy="58" r="5" fill="#14213d"/>
+    <circle cx="128.6" cy="56.4" r="1.6" fill="#fff"/>
+    <circle cx="134" cy="70" r="5" fill="#ff4f8b" opacity=".5"/>
+    <path d="M122 74Q131 82 141 72" stroke="#14213d" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <polygon points="106,44 120,12 136,44" fill="#ff4f8b"/>
+    <circle cx="116" cy="34" r="3" fill="#ffd23f"/>
+    <circle cx="125" cy="26" r="3" fill="#4cc9f0"/>
+    <circle cx="120" cy="10" r="6" fill="#4cc9f0"/>
+  </svg>
+</button>
+<span class="dinoTxt" id="dinoTxt" aria-live="polite">Sentuh dinonya!</span>
+
+<svg class="cake" id="kue" viewBox="0 0 320 300" role="group" aria-label="Kue ulang tahun dengan tiga lilin">
+  <ellipse cx="160" cy="280" rx="140" ry="12" fill="#14213d" opacity=".15"/>
+  <rect x="40" y="194" width="240" height="84" rx="14" fill="#ff9ec0"/>
+  <rect x="62" y="134" width="196" height="70" rx="14" fill="#ffd23f"/>
+  <path d="M40 208c20 22 40-6 60 12s40-8 60 10 40-14 60 8 40-10 60 6v-30H40z" fill="#fff"/>
+  <path d="M62 152c16 18 32-4 49 10s32-8 49 8 32-12 49 6 32-8 49 4v-22H62z" fill="#fff"/>
+  <g class="candle" data-i="0" tabindex="0" role="button" aria-label="Lilin 1, nyalakan">
+    <rect class="hit" x="90" y="40" width="40" height="96" fill="transparent"/>
+    <circle class="glow" cx="110" cy="64" r="26" fill="#ffd23f" opacity=".35"/>
+    <rect x="104" y="90" width="12" height="46" rx="4" fill="#14213d"/>
+    <g class="flame"><path d="M110 86c-9-10-4-20 0-27 4 7 9 17 0 27z" fill="#ffb703"/></g>
+    <text class="hint" x="110" y="34" text-anchor="middle">sentuh</text>
+  </g>
+  <g class="candle" data-i="1" tabindex="0" role="button" aria-label="Lilin 2, nyalakan">
+    <rect class="hit" x="140" y="32" width="40" height="104" fill="transparent"/>
+    <circle class="glow" cx="160" cy="56" r="26" fill="#ffd23f" opacity=".35"/>
+    <rect x="154" y="82" width="12" height="54" rx="4" fill="#ff4f8b"/>
+    <g class="flame"><path d="M160 78c-9-10-4-20 0-27 4 7 9 17 0 27z" fill="#ffb703"/></g>
+    <text class="hint" x="160" y="26" text-anchor="middle">sentuh</text>
+  </g>
+  <g class="candle" data-i="2" tabindex="0" role="button" aria-label="Lilin 3, nyalakan">
+    <rect class="hit" x="190" y="40" width="40" height="96" fill="transparent"/>
+    <circle class="glow" cx="210" cy="64" r="26" fill="#ffd23f" opacity=".35"/>
+    <rect x="204" y="90" width="12" height="46" rx="4" fill="#14213d"/>
+    <g class="flame"><path d="M210 86c-9-10-4-20 0-27 4 7 9 17 0 27z" fill="#ffb703"/></g>
+    <text class="hint" x="210" y="34" text-anchor="middle">sentuh</text>
+  </g>
+</svg>
+
+<button id="tiup" type="button" disabled>Nyalakan 3 lilin dulu</button>
+
+<!-- Backsound: taruh file audio di folder yang sama dengan index.html, lalu samakan namanya di src -->
+<audio id="bgm" src="backsound.mp3" loop preload="auto"></audio>
+
+<section id="langit" aria-labelledby="jdl">
+  <h2 id="jdl">Pecahkan balonnya</h2>
+  <p class="sub" style="min-height:0">Tiap balon menyimpan satu ucapan.</p>
+
+  <div class="balon-area" id="balon"></div>
+  <p class="progres" id="prog" aria-live="polite"></p>
+  <div class="ucapan" id="ucapan" aria-live="polite"></div>
+  <div class="tahap" id="game">
+    <h2>Tangkap hatinya</h2>
+    <p class="sub" style="min-height:0">Sentuh 12 hati yang jatuh.</p>
+    <div class="arena" id="arena"><div class="skor" id="skor">0 / 12</div></div>
+    <button type="button" id="mulai">Mulai</button>
+  </div>
+  <div class="tahap" id="kado">
+    <h2>Ada kado buatmu</h2>
+    <p class="sub" style="min-height:0" id="kadoTip">Sentuh kadonya 5 kali.</p>
+    <button class="kotak" id="kotak" type="button" aria-label="Kado, sentuh untuk membuka">🎁</button>
+    <div class="kartu" id="isiKado" style="display:none;--c:#ff4f8b;margin-top:18px;text-align:left">Isi kadonya: satu pelukan hangat 🫂, satu doa yang tulus, dan satu teman yang selalu ada buat kamu. Semoga harimu manis 🤍</div>
+  </div>
+  <div class="tahap" id="harapan">
+    <h2>Tulis harapanmu</h2>
+    <p class="sub" style="min-height:0">Ketik satu harapan, lalu terbangkan sebagai lentera.</p>
+    <input id="harap" type="text" maxlength="60" placeholder="Harapanku tahun ini..." autocomplete="off">
+    <br><button type="button" id="terbang">Terbangkan</button>
+    <div class="malam" id="malam" aria-live="polite"></div>
+  </div>
+  <div class="final" id="final">
+    <h2>Itu semuanya!</h2>
+    <p>Semoga tahun ini jadi tahun yang paling baik untukmu.</p>
+    <button class="btn2" id="hujan" type="button">Hujan konfeti</button>
+  </div>
+</section>
+
+<label class="ganti">Ganti nama:<input id="in" type="text" maxlength="24" placeholder="Nama yang berulang tahun" autocomplete="off"></label>
+
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  var namaEl=$('nama'),input=$('in'),btn=$('tiup'),sub=$('sub'),cv=$('c'),ctx=cv.getContext('2d');
+  var lit=[false,false,false],parts=[],run=false,pecah=0;
+  var pesan=[
+    ['#ff4f8b',"Selamat ulang tahun, Sherlyta. Selamat menjalani umur ke 21. 🤍"],
+    ['#ffd23f',"Semoga segala hal yang baik datang ke kam ya, orang baik akan selalu dikelilingi hal yang baik. Doa yang terbaik buat orang baik."],
+    ['#4cc9f0',"Semoga segala sesuatu yang kam inginkan, yang kam harapkan, perlahan terwujud satu persatu ya anak baikkk 🤍"],
+    ['#9b5de5',"Remember i'll be the one of many people who will always proud of u‼️🫂"],
+    ['#06d6a0',"Terimakasi sudah mau menjadi temen kuu, terimakasi sudah mau mendengarkan kuu, terimakasii banyak banyak banyaaakkkk."],
+    ['#ff8c42',"Maaf kalau selama jadi teman mu aku belum jadi yang terbaik yaaaa, but i'll be here for u, just text me yaaa sayangkuuuu. Enjoy ur daayyy‼️🫂🤍"]
+  ];
+  function setNama(v){v=(v||'').trim();namaEl.textContent=v||'Sherlyta';}
+  try{var h=decodeURIComponent(location.hash.slice(1));if(h){setNama(h);input.value=h;}}catch(e){}
+  input.addEventListener('input',function(){setNama(input.value);});
+
+  function size(){cv.width=innerWidth;cv.height=innerHeight;}
+  size();addEventListener('resize',size);
+  var cols=['#ff4f8b','#ffd23f','#4cc9f0','#ffffff','#9b5de5','#06d6a0'];
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function boom(x,y,n,spread,bias){
+    if(reduce)return;
+    for(var i=0;i<n;i++)parts.push({x:x,y:y,vx:(Math.random()-.5)*spread+(bias||0),vy:-Math.random()*spread*.8-3,s:Math.random()*7+4,c:cols[i%cols.length],r:Math.random()*6,vr:(Math.random()-.5)*.4});
+    if(!run){run=true;requestAnimationFrame(tick);}
+  }
+  function tick(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    parts.forEach(function(p){p.vy+=.3;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.fillStyle=p.c;ctx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);ctx.restore();});
+    parts=parts.filter(function(p){return p.y<cv.height+40;});
+    if(parts.length)requestAnimationFrame(tick);else{run=false;ctx.clearRect(0,0,cv.width,cv.height);}
+  }
+
+  /* suara */
+  var ac=null,muted=false;
+  function tone(f,t,d,ty,v){if(muted)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();var o=ac.createOscillator(),g=ac.createGain(),s=ac.currentTime+t;o.type=ty||'sine';o.frequency.value=f;g.gain.setValueAtTime(v||.15,s);g.gain.exponentialRampToValueAtTime(.001,s+d);o.connect(g);g.connect(ac.destination);o.start(s);o.stop(s+d+.05);}catch(e){}}
+  function lagu(){var t=0;[[392,.75],[392,.25],[440,1],[392,1],[523,1],[494,2],[392,.75],[392,.25],[440,1],[392,1],[587,1],[523,2],[392,.75],[392,.25],[784,1],[659,1],[523,1],[494,1],[440,1],[698,.75],[698,.25],[659,1],[523,1],[587,1],[523,2]].forEach(function(n){tone(n[0],t,n[1]*.4,'triangle',.2);t+=n[1]*.42;});}
+  function cmd(f){var a=$('bgm');if(!a)return;try{if(f==='playVideo'){a.currentTime=0;var p=a.play();if(p&&p.catch)p.catch(function(){});}else if(f==='mute'){a.muted=true;}else if(f==='unMute'){a.muted=false;}}catch(e){}}
+  $('mute').addEventListener('click',function(){muted=!muted;cmd(muted?'mute':'unMute');this.textContent=muted?'🔇':'🔊';this.setAttribute('aria-label',muted?'Nyalakan suara':'Matikan suara');});
+
+  /* hiasan */
+  var warna=['#ff4f8b','#ffd23f','#4cc9f0','#9b5de5','#06d6a0','#ff8c42'];
+  var bt=document.createElement('div');bt.className='bunting';bt.setAttribute('aria-hidden','true');
+  for(var q=0;q<14;q++){var fl=document.createElement('span');fl.style.setProperty('--c',warna[q%6]);fl.style.setProperty('--d',(q*.17)+'s');bt.appendChild(fl);}
+  document.body.appendChild(bt);
+  var dc=document.createElement('div');dc.className='deco';dc.setAttribute('aria-hidden','true');
+  for(var j=0;j<12;j++){var bl=document.createElement('i');bl.style.left=(j*8.5+Math.random()*4)+'%';bl.style.setProperty('--c',warna[j%6]);bl.style.setProperty('--t',(10+Math.random()*8)+'s');bl.style.setProperty('--d',(-Math.random()*14)+'s');bl.style.setProperty('--x',(Math.random()*60-30)+'px');dc.appendChild(bl);}
+  document.body.appendChild(dc);
+
+  /* kembang api */
+  function kembang(x,y){if(reduce)return;var c=cols[Math.floor(Math.random()*cols.length)];for(var i=0;i<60;i++){var a=i/60*6.283,sp=4+Math.random()*4;parts.push({x:x,y:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,s:6,c:c,r:0,vr:0});}if(!run){run=true;requestAnimationFrame(tick);}}
+  function pesta(n){for(var i=0;i<n;i++)setTimeout(function(){kembang(innerWidth*(.15+Math.random()*.7),innerHeight*(.15+Math.random()*.3));tone(200+Math.random()*200,0,.25,'sawtooth',.06);},i*350);}
+  document.addEventListener('pointerdown',function(e){if(e.target.closest('button,input,label,.candle'))return;boom(e.clientX,e.clientY,24,10);});
+
+  /* lilin */
+  var candles=document.querySelectorAll('.candle');
+  function refresh(){
+    var n=lit.filter(Boolean).length;
+    candles.forEach(function(c,i){c.classList.toggle('lit',lit[i]);c.setAttribute('aria-label','Lilin '+(i+1)+(lit[i]?', menyala':', nyalakan'));});
+    if(document.body.classList.contains('out'))return;
+    btn.disabled=n<3;
+    btn.textContent=n<3?'Nyalakan 3 lilin dulu ('+n+'/3)':'Tiup lilin';
+    sub.textContent=n<3?'Sentuh tiap lilin untuk menyalakannya.':'Semua lilin menyala. Buat permintaan, lalu tiup.';
+  }
+  candles.forEach(function(c,i){
+    function toggle(){if(document.body.classList.contains('out'))return;lit[i]=!lit[i];refresh();
+      if(lit[i]){var r=c.getBoundingClientRect();boom(r.left+r.width/2,r.top+10,10,5);tone(660+i*110,0,.18,'triangle',.18);}}
+    c.addEventListener('click',toggle);
+    c.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
+  });
+  btn.addEventListener('click',function(){
+    document.body.classList.add('out');
+    candles.forEach(function(c){c.classList.remove('lit');});
+    btn.style.display='none';
+    sub.textContent='Lilin padam. Semoga permintaanmu terkabul!';
+    boom(0,innerHeight,120,20,8);boom(innerWidth,innerHeight,120,20,-8);boom(innerWidth/2,innerHeight*.45,120,18);cmd('playVideo');pesta(4);
+    $('prog').textContent='0 dari '+pesan.length+' ucapan terbuka';
+    setTimeout(function(){$('langit').scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});},700);
+  });
+
+  /* balon */
+  var area=$('balon');
+  pesan.forEach(function(p,i){
+    var b=document.createElement('button');
+    b.className='balon';b.type='button';
+    b.style.setProperty('--c',p[0]);b.style.setProperty('--d',(i*0.35)+'s');
+    b.setAttribute('aria-label','Balon '+(i+1)+', pecahkan');
+    b.addEventListener('click',function(){
+      var r=b.getBoundingClientRect();
+      boom(r.left+r.width/2,r.top+r.height/2,45,12);tone(300+Math.random()*300,0,.12,'square',.08);
+      b.classList.add('pecah');b.disabled=true;
+      var k=document.createElement('div');k.className='kartu';k.style.setProperty('--c',p[0]);k.textContent=p[1];
+      var u=$('ucapan');u.insertBefore(k,u.firstChild);
+      pecah++;
+      $('prog').textContent=pecah+' dari '+pesan.length+' ucapan terbuka';
+      if(pecah===pesan.length){pesta(4);boom(0,innerHeight,100,20,8);boom(innerWidth,innerHeight,100,20,-8);setTimeout(function(){buka('game');},1200);}
+    });
+    area.appendChild(b);
+  });
+  $('hujan').addEventListener('click',function(){
+    pesta(8);
+    for(var i=0;i<6;i++)setTimeout(function(){boom(Math.random()*innerWidth,innerHeight*.35,50,14);},i*220);
+  });
+  /* tahap lanjutan */
+  function buka(id){var e=$(id);if(e.classList.contains('on'))return;e.classList.add('on');setTimeout(function(){e.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});},150);}
+
+  var skor=0,gt=null;
+  function spawn(){
+    var h=document.createElement('button');h.type='button';h.className='hati';h.textContent='💗';
+    h.setAttribute('aria-label','Hati, tangkap');
+    h.style.left=(Math.random()*85)+'%';h.style.animationDuration=(2.6+Math.random()*1.6)+'s';
+    h.addEventListener('click',function(){
+      if(h.dataset.x)return;h.dataset.x=1;
+      var r=h.getBoundingClientRect();boom(r.left+r.width/2,r.top+r.height/2,14,8);
+      tone(700+skor*40,0,.1,'triangle',.12);h.remove();skor++;
+      $('skor').textContent=skor+' / 12';
+      if(skor>=12){clearInterval(gt);$('mulai').disabled=false;$('mulai').textContent='Main lagi';pesta(3);setTimeout(function(){buka('kado');},900);}
+    });
+    h.addEventListener('animationend',function(){h.remove();});
+    $('arena').appendChild(h);
+  }
+  $('mulai').addEventListener('click',function(){
+    skor=0;$('skor').textContent='0 / 12';this.disabled=true;this.textContent='Tangkap!';
+    clearInterval(gt);gt=setInterval(spawn,650);
+  });
+
+  var tap=0;
+  $('kotak').addEventListener('click',function(){
+    if(tap>=5)return;tap++;var k=this;
+    k.classList.remove('goyang');void k.offsetWidth;k.classList.add('goyang');
+    tone(300+tap*80,0,.1,'square',.08);
+    $('kadoTip').textContent=tap<5?'Sentuh '+(5-tap)+' kali lagi.':'Terbuka!';
+    if(tap===5){k.textContent='🎉';var r=k.getBoundingClientRect();boom(r.left+r.width/2,r.top+30,90,16);
+      $('isiKado').style.display='block';setTimeout(function(){buka('harapan');},1400);}
+  });
+
+  var wishN=0;
+  function terbangkan(){
+    var v=$('harap').value.trim();if(!v)return;
+    var l=document.createElement('div');l.className='lentera';l.textContent=v;l.style.left=(5+Math.random()*60)+'%';
+    $('malam').appendChild(l);setTimeout(function(){l.remove();},7200);
+    $('harap').value='';tone(520,0,.4,'sine',.1);wishN++;
+    if(wishN===1)setTimeout(function(){$('final').classList.add('on');pesta(6);$('final').scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});},2200);
+  }
+  $('terbang').addEventListener('click',terbangkan);
+  $('harap').addEventListener('keydown',function(e){if(e.key==='Enter')terbangkan();});
+
+  var dTxt=['Rawr! Selamat ulang tahun! 🦖','Panjang umur, Sherlyta!','Ayo tiup lilinnya ya!','Kamu hebat banget 🤍','Semoga semua harapanmu terwujud!'],dI=0;
+  $('dino').addEventListener('click',function(){
+    var b=this;b.classList.remove('loncat');void b.offsetWidth;b.classList.add('loncat');
+    $('dinoTxt').textContent=dTxt[dI%dTxt.length];dI++;
+    var r=b.getBoundingClientRect();boom(r.left+r.width/2,r.top+20,26,10);
+    tone(260+(dI%4)*90,0,.18,'square',.1);
+  });
+
+  refresh();
+})();
+</script>
+</body>
+</html>
